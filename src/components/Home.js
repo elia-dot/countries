@@ -4,16 +4,24 @@ import CountryCard from "./CountryCard";
 import { BiSearch } from "react-icons/bi";
 import { useHistory } from "react-router";
 
+const ErrorMsg = styled.div`
+  width: 280px;
+  background: #ffe6e6;
+  border: 1px solid #ff9999;
+  margin: 4em auto 0;
+  padding: 0.3em 0.6em;
+  border-radius: 0.8em;
+  color: ${({ theme }) => theme.text};
+`;
 const InputsWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 80%;
-  margin: 4em auto;
+  margin: 2em auto;
   @media (max-width: 600px) {
     width: 95%;
     flex-direction: column;
-    align-items: stretch;
   }
 `;
 
@@ -21,7 +29,6 @@ const Form = styled.form`
   display: flex;
   @media (max-width: 600px) {
     margin-bottom: 2em;
-    width: 400px;
   }
 `;
 
@@ -37,6 +44,9 @@ const SearchInput = styled.input`
   }
   &::placeholder {
     font-size: 0.9em;
+  }
+  @media (max-width: 600px) {
+    width: 250px;
   }
 `;
 
@@ -62,6 +72,9 @@ const Select = styled.select`
   &:focus {
     border: 0.3px solid lightblue;
   }
+  @media (max-width: 600px) {
+    width: 285px;
+  }
 `;
 
 const CountriesWrapper = styled.div`
@@ -82,6 +95,7 @@ const Home = ({ theme }) => {
   const [countries, setCountries] = useState([]);
   const [searchTerm, setShearchTerm] = useState("");
   const [allCountries, setAllCountries] = useState("");
+  const [error, setError] = useState("");
 
   const history = useHistory();
 
@@ -94,7 +108,11 @@ const Home = ({ theme }) => {
     const foundCountry = allCountries.find(
       ({ name }) => name.toLowerCase() === searchTerm
     );
-    history.push(`/${foundCountry.name}`);
+    if (foundCountry) {
+      history.push(`/${foundCountry.name}`);
+    } else {
+      setError("Invalid country name...");
+    }
   };
 
   useEffect(() => {
@@ -140,6 +158,7 @@ const Home = ({ theme }) => {
   };
   return (
     <div>
+      {error && <ErrorMsg>{error}</ErrorMsg>}
       <InputsWrapper>
         <Form>
           <SearchInput

@@ -4,6 +4,8 @@ import CountryCard from "./CountryCard";
 import { BiSearch } from "react-icons/bi";
 import { useHistory } from "react-router";
 
+import Loading from "./Loading";
+
 const ErrorMsg = styled.div`
   width: 280px;
   background: #ffe6e6;
@@ -11,7 +13,7 @@ const ErrorMsg = styled.div`
   margin: 4em auto 0;
   padding: 0.3em 0.6em;
   border-radius: 0.8em;
-  color: ${({ theme }) => theme.text};
+  color: black;
 `;
 const InputsWrapper = styled.div`
   display: flex;
@@ -96,6 +98,7 @@ const Home = ({ theme }) => {
   const [searchTerm, setShearchTerm] = useState("");
   const [allCountries, setAllCountries] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(true);
 
   const history = useHistory();
 
@@ -109,6 +112,7 @@ const Home = ({ theme }) => {
       ({ name }) => name.toLowerCase() === searchTerm
     );
     if (foundCountry) {
+      setShearchTerm("");
       history.push(`/${foundCountry.name}`);
     } else {
       setError("Invalid country name...");
@@ -123,6 +127,7 @@ const Home = ({ theme }) => {
       const allCountries = await fetch(`${baseUrl}/region/${region}`);
       const res = await allCountries.json();
       if (active) {
+        setLoading(false);
         setCountries(res);
       }
     };
@@ -156,6 +161,9 @@ const Home = ({ theme }) => {
       <CountryCard key={country.name} country={country} />
     ));
   };
+  if (loading) {
+    return <Loading />;
+  }
   return (
     <div>
       {error && <ErrorMsg>{error}</ErrorMsg>}

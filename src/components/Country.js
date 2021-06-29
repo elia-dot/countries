@@ -3,6 +3,8 @@ import styled from "styled-components";
 import { BsArrowLeft } from "react-icons/bs";
 import { Link } from "react-router-dom";
 
+import Loading from "./Loading";
+
 const CountryWrapper = styled.section`
   width: 80%;
   margin: 5em auto;
@@ -105,6 +107,7 @@ const CountryButton = styled.button`
 `;
 
 const Country = (props) => {
+  const [loading, setLoading] = useState(true);
   const [country, setCountry] = useState({});
 
   useEffect(() => {
@@ -116,6 +119,7 @@ const Country = (props) => {
       const country = await fetch(`${baseUrl}/${name}?fullText=true`);
       const res = await country.json();
       if (active) {
+        setLoading(false);
         setCountry(res[0]);
       }
     };
@@ -125,6 +129,9 @@ const Country = (props) => {
     };
   }, [props.match.params.country]);
 
+  if (loading) {
+    return <Loading />;
+  }
   return (
     <CountryWrapper>
       <Link to="/">

@@ -19,9 +19,9 @@ const InputsWrapper = styled.div`
 
 const Form = styled.form`
   display: flex;
-  max-width: 80%;
   @media (max-width: 600px) {
     margin-bottom: 2em;
+    width: 400px;
   }
 `;
 

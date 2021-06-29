@@ -109,7 +109,7 @@ const Home = ({ theme }) => {
   const handleSearch = (e) => {
     e.preventDefault();
     const foundCountry = allCountries.find(
-      ({ name }) => name.toLowerCase() === searchTerm
+      ({ name }) => name.toLowerCase() === searchTerm.toLowerCase()
     );
     if (foundCountry) {
       setShearchTerm("");
